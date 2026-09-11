@@ -1,0 +1,106 @@
+/* Route pools are extracted from the supplied Crystal Legacy Encounters.docx. */
+const AREA_SOURCE_KEYS = {
+  'Sprout Tower': ['Sprout Tower 2F', 'Sprout Tower 3F'],
+  'Ruins of Alph — Inner': ['Ruins of Alph (Inside)'],
+  'Ruins of Alph — Outside': ['Ruins of Alph (Outside)'],
+  'Slowpoke Well B1F': ['Slowpoke Well 2F'],
+  'National Park (Regular)': ['National Park'],
+  'Mt. Mortar': ['Mt. Mortar 1F & B1F'],
+  'Ice Path': ['Ice Path: 1F'],
+  'Dragon’s Den': ["Dragon's Den"],
+  'Diglett’s Cave': ["Diglett's Cave"],
+  'Vermilion City (& Harbor)': ['Vermilion City', 'Vermilion City (Harbor)'],
+  'Mt. Silver — Outside': ['Mt. Silver (Outside)']
+};
+function poolFor(name, fallback) {
+  const keys = AREA_SOURCE_KEYS[name] || [name];
+  const sourced = keys.flatMap(key => DOCUMENTED_POOLS[key] || []);
+  return [...new Set((sourced.length ? sourced : fallback.split(', ').filter(Boolean)).map(pokemon => pokemon === 'Pidgeotoo' ? 'Pidgeotto' : pokemon))];
+}
+const AREAS = [
+  ['Route 29','Pidgey, Rattata, Sentret, Hoothoot, Hoppip', 'Roster read from the supplied documentation’s encounter-image chart.'],
+  ['Route 46','Rattata, Spearow, Geodude, Phanpy','Phanpy is available during Day.'],
+  ['Cherrygrove City','Tentacool, Tentacruel, Magikarp, Krabby, Goldeen, Staryu, Corsola','Roster read from the supplied documentation’s encounter-image chart.'],
+  ['Route 30','Caterpie, Weedle, Pidgey, Zubat, Rattata, Hoothoot, Ledyba, Poliwag','Roster read from the supplied documentation’s encounter-image chart; Hoppip removed.'],
+  ['Route 31','Caterpie, Weedle, Pidgey, Zubat, Rattata, Bellsprout, Gastly, Hoothoot, Ledyba, Pichu, Mareep, Poliwag','Roster read from the supplied documentation’s encounter-image chart; Hoppip removed.'],
+  ['Dark Cave — Route 31','Zubat, Geodude, Dunsparce, Wobbuffet, Larvitar','Larvitar added.'],
+  ['Violet City','Pidgey, Rattata, Bellsprout, Hoothoot','Vanilla pool (unchanged).'],
+  ['Sprout Tower','Rattata, Gastly, Bellsprout','Gastly available Morning/Day on upper floors.'],
+  ['Route 36','Pidgey, Nidoran♀, Nidoran♂, Stantler, Houndour','Ledyba/Spinarak removed; Houndour at Night.'],
+  ['Ruins of Alph — Inner','Unown','Vanilla pool (unchanged).'],
+  ['Ruins of Alph — Outside','Natu, Smeargle, Hoppip, Wooper','Vanilla pool (unchanged).'],
+  ['Route 32','Pidgey, Ekans, Zubat, Bellsprout, Gastly, Mareep, Wooper, Poliwag, Tentacool, Tentacruel','Roster read from the supplied documentation’s encounter-image chart; Hoothoot/Hoppip removed.'],
+  ['Union Cave 1F','Zubat, Geodude, Onix, Sandshrew, Cubone','Rattata/Wooper removed; Cubone added.'],
+  ['Union Cave B1F','Zubat, Geodude, Onix, Sandshrew, Marill','Rattata/Wooper removed; Marill added.'],
+  ['Union Cave B2F','Golbat, Onix, Sandslash, Quagsire, Diglett, Kangaskhan','Zubat/Geodude removed; Diglett and Kangaskhan added.'],
+  ['Route 33','Hoppip, Pidgey, Rattata, Spearow, Machop, Ekans','Geodude/Hoppip removed; Machop added; Spearow Morning; Ekans Night.'],
+  ['Slowpoke Well 1F','Zubat, Slowpoke, Geodude','Vanilla pool (unchanged).'],
+  ['Ilex Forest','Caterpie, Metapod, Weedle, Kakuna, Paras, Oddish','Pidgey removed; Oddish all day; Metapod Morning, Kakuna Day.'],
+  ['Route 34','Ditto, Drowzee, Abra, Mankey, Grimer, Snubbull','Rattata/Pidgey/Hoothoot removed; Mankey Morning/Day, Grimer added, Snubbull Night.'],
+  ['Route 35','Nidoran♀, Nidoran♂, Yanma, Pidgey, Ditto, Growlithe','Jigglypuff/Drowzee/Hoothoot removed; Growlithe Night; Yanma more common.'],
+  ['National Park','Sunkern, Nidoran♀, Nidoran♂, Yanma, Scyther, Murkrow','Pidgey/Ledyba removed; Scyther added; Murkrow Night.'],
+  ['Route 37','Pidgey, Stantler, Vulpix, Hoothoot, Spinarak','Ledyba removed; Vulpix Morning; Stantler Day.'],
+  ['Burned Tower 1F','Rattata, Koffing, Magmar, Slugma, Houndour, Zubat','Slugma and Houndour added; Zubat Night.'],
+  ['Burned Tower B1F','Rattata, Koffing, Magmar, Misdreavus','Weezing removed; Magmar and Misdreavus added.'],
+  ['Route 38','Pidgey, Meowth, Magnemite, Farfetch’d, Doduo, Tauros, Miltank','Rattata/Pidgeotto removed; Doduo added.'],
+  ['Route 39','Pidgey, Magnemite, Farfetch’d, Miltank, Ponyta, Doduo','Rattata/Pidgeotto removed; Ponyta and Doduo added.'],
+  ['Olivine City','Tentacool, Krabby, Chinchou, Staryu','Vanilla pool (unchanged).'],
+  ['Route 40','Tentacool, Tentacruel, Krabby, Staryu, Shellder','Shellder added.'],
+  ['Route 41','Tentacool, Mantine, Staryu, Horsea','Tentacruel removed; Horsea added.'],
+  ['Cianwood City','Tentacool, Krabby, Staryu, Chinchou','Vanilla pool (unchanged).'],
+  ['Route 42','Mareep, Flaaffy, Ekans, Sandshrew, Fearow, Gligar, Remoraid','Spearow/Rattata removed; Gligar and surf Remoraid added.'],
+  ['Mt. Mortar','Zubat, Golbat, Machop, Machoke, Cubone, Rhyhorn','Rattata/Raticate removed; Cubone and Rhyhorn added.'],
+  ['Route 43','Pidgey, Flaaffy, Venonat, Noctowl, Girafarig, Skarmory','Pidgeotto/Sentret/Noctowl removed; Flaaffy, Girafarig, Skarmory added.'],
+  ['Lake of Rage','Magikarp, Gyarados, Nidorino, Nidorina, Pidgeotto','Vanilla pool (unchanged).'],
+  ['Route 44','Tangela, Lickitung, Weepinbell, Bellsprout, Pidgeotto, Electabuzz','Bellsprout/Poliwag removed from grass; Pidgeotto and Electabuzz added.'],
+  ['Ice Path','Swinub, Golbat, Seel, Dewgong, Sneasel, Jynx','Zubat removed lower floors; Sneasel all day; Jynx Night on B3F.'],
+  ['Dragon’s Den','Dratini, Magikarp, Dragonair, Golbat','Vanilla pool (unchanged).'],
+  ['Route 45','Graveler, Donphan, Skarmory, Ursaring, Golbat, Murkrow','Geodude/Phanpy removed; Ursaring Morning/Day; Golbat/Murkrow/Skarmory Night.'],
+  ['Route 27','Ponyta, Sandslash, Arbok, Dodrio, Murkrow, Chikorita, Cyndaquil, Totodile','Named removals applied; starters are time-specific Lv.5.'],
+  ['Route 26','Ponyta, Arbok, Dodrio, Murkrow, Bulbasaur, Charmander, Squirtle','Named removals applied; starters are 1% time-specific Lv.5.'],
+  ['Victory Road','Golbat, Onix, Ursaring, Golem, Donphan, Steelix','Graveler/Rhyhorn removed; Golem, Donphan, Steelix (1%) added.'],
+  ['Vermilion City','Tentacool, Krabby, Staryu, Chinchou','Vanilla pool (unchanged).'],
+  ['Route 4','Rattata, Spearow, Sandshrew, Ekans, Mankey','Vanilla pool (unchanged).'],
+  ['Cerulean City','Goldeen, Magikarp, Psyduck, Poliwag','Vanilla pool (unchanged).'],
+  ['Route 5','Pidgey, Rattata, Meowth, Abra, Jigglypuff','Vanilla pool (unchanged).'],
+  ['Route 6','Pidgey, Rattata, Meowth, Abra, Jigglypuff','Vanilla pool (unchanged).'],
+  ['Route 7','Pidgey, Rattata, Meowth, Murkrow, Houndour','Vanilla pool (unchanged).'],
+  ['Celadon City','Grimer, Muk, Poliwag, Goldeen','Vanilla pool (unchanged).'],
+  ['Route 8','Pidgey, Rattata, Growlithe, Vulpix, Abra','Vanilla pool (unchanged).'],
+  ['Route 9','Rattata, Spearow, Ekans, Sandshrew, Drowzee','Vanilla pool (unchanged).'],
+  ['Route 10','', 'No wild encounters listed in supplied documentation.'],
+  ['Rock Tunnel 1F','', 'No wild encounters listed in supplied documentation.'],
+  ['Rock Tunnel B1F','', 'No wild encounters listed in supplied documentation.'],
+  ['Route 11','Rattata, Spearow, Drowzee, Magnemite','Vanilla pool (unchanged).'],
+  ['Route 12','Pidgey, Venonat, Farfetch’d, Quagsire','Vanilla pool (unchanged).'],
+  ['Route 13','Pidgey, Venonat, Ditto, Chansey, Tauros','Vanilla pool (unchanged).'],
+  ['Route 14','Pidgey, Venonat, Ditto, Chansey, Tauros','Vanilla pool (unchanged).'],
+  ['Route 15','Pidgey, Venonat, Ditto, Chansey, Tauros','Vanilla pool (unchanged).'],
+  ['Fuchsia City','Magikarp, Goldeen, Tentacool, Krabby','Vanilla pool (unchanged).'],
+  ['Route 16','Rattata, Doduo, Grimer, Muk','Vanilla pool (unchanged).'],
+  ['Route 17','Rattata, Doduo, Grimer, Muk','Vanilla pool (unchanged).'],
+  ['Route 18','Rattata, Doduo, Fearow','Vanilla pool (unchanged).'],
+  ['Route 24','Pidgey, Abra, Caterpie, Weedle, Oddish, Bellsprout','Vanilla pool (unchanged).'],
+  ['Diglett’s Cave','Diglett, Dugtrio','Vanilla pool (unchanged).'],
+  ['Pallet Town','Tentacool, Krabby, Magikarp, Goldeen','Vanilla pool (unchanged).'],
+  ['Route 1','Pidgey, Rattata, Sentret, Hoothoot','Vanilla pool (unchanged).'],
+  ['Viridian City','Poliwag, Goldeen, Magikarp, Tentacool','Vanilla pool (unchanged).'],
+  ['Route 2','Pidgey, Rattata, Caterpie, Weedle, Ledyba, Spinarak','Vanilla pool (unchanged).'],
+  ['Route 3','Spearow, Jigglypuff, Zubat, Geodude, Ekans, Sandshrew','Vanilla pool (unchanged).'],
+  ['Mt. Moon','Zubat, Paras, Clefairy, Geodude, Sandshrew','Vanilla pool (unchanged).'],
+  ['Route 19','Tentacool, Tentacruel, Staryu, Shellder','Vanilla pool (unchanged).'],
+  ['Route 20','Tentacool, Tentacruel, Staryu, Shellder','Vanilla pool (unchanged).'],
+  ['Cinnabar Island','Tentacool, Tentacruel, Magikarp, Krabby','Vanilla pool (unchanged).'],
+  ['Route 21','Tentacool, Tentacruel, Tangela, Mr. Mime','Vanilla pool (unchanged).'],
+  ['Route 22','Rattata, Spearow, Nidoran♀, Nidoran♂, Mankey','Vanilla pool (unchanged).'],
+  ['Route 28','Ponyta, Doduo, Rapidash, Tangela, Sneasel','Vanilla pool (unchanged).'],
+  ['Mt. Silver — Outside','Ursaring, Golem, Rapidash, Skarmory, Venusaur, Charizard, Donphan, Blastoise, Crobat, Quagsire, Houndoom','Complete Crystal Legacy rework; availability varies by time.']
+].map(([name,pokemon,note], index) => ({ id:index + 1, name, pokemon:poolFor(name, pokemon), note:'Full encounter pool from Crystal Legacy Encounters.docx.', sourceKeys:AREA_SOURCE_KEYS[name] || [name] }));
+
+// Keep every documented route/cave/town available even when it was absent from the first layout.
+const represented = new Set(AREAS.flatMap(area => area.sourceKeys));
+Object.entries(DOCUMENTED_POOLS).forEach(([name, pokemon]) => {
+  if (!represented.has(name) && !/^(?:Routes |Azalea Town|Lake of Rage &)/.test(name)) {
+    AREAS.push({ id:AREAS.length + 1, name, pokemon, note:'Full encounter pool from Crystal Legacy Encounters.docx.', sourceKeys:[name] });
+  }
+});

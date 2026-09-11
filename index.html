@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#241c39" />
+  <title>Crystal Legacy Nuzlocke</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <p class="eyebrow">Pokémon Crystal Legacy</p>
+      <h1>Nuzlocke log</h1>
+      <p class="subtitle">One unique encounter per area. No second chances.</p>
+    </header>
+
+    <section id="unlock" class="panel unlock-panel" aria-labelledby="unlock-title">
+      <div class="pokeball" aria-hidden="true"><i></i></div>
+      <h2 id="unlock-title">Open a playthrough</h2>
+      <p>Choose a password to create or reopen a private saved run on this device.</p>
+      <form id="unlock-form">
+        <label for="password">Playthrough password</label>
+        <input id="password" type="password" inputmode="text" autocomplete="current-password" minlength="3" required placeholder="At least 3 characters" />
+        <button class="primary" type="submit">Open playthrough</button>
+      </form>
+      <p class="fine-print">The password identifies this save in this browser. It is not sent anywhere.</p>
+    </section>
+
+    <section id="app" hidden>
+      <div class="runbar">
+        <div><span class="run-label">PLAYTHROUGH</span><strong id="run-name">••••••</strong></div>
+        <button id="switch-run" class="text-button">Switch</button>
+      </div>
+      <section class="summary" aria-label="Playthrough progress">
+        <div><strong id="claimed-count">0</strong><span>areas logged</span></div>
+        <div><strong id="caught-count">0</strong><span>caught</span></div>
+        <div><strong id="missed-count">0</strong><span>missed</span></div>
+      </section>
+      <div class="rule-strip">Duplicates are unavailable after they are logged — caught <em>or</em> missed.</div>
+      <div class="toolbar">
+        <label class="search"><span>⌕</span><input id="search" type="search" placeholder="Find an area" /></label>
+        <button id="filter-open" class="filter-button" aria-pressed="false">Open only</button>
+      </div>
+      <p id="source-note" class="source-note">Full encounter pools come from the supplied Crystal Legacy Encounters document, including grass, water, and fishing encounters.</p>
+      <div id="area-list" class="area-list"></div>
+    </section>
+  </main>
+  <template id="area-template">
+    <article class="area-card">
+      <button class="area-head" type="button" aria-expanded="false">
+        <span class="step"></span>
+        <span class="area-title"><strong></strong><small></small></span>
+        <span class="state-pill">Open</span>
+        <span class="chevron">⌄</span>
+      </button>
+      <div class="area-body" hidden>
+        <p class="encounter-note"></p>
+        <label>First unique encounter
+          <select class="pokemon-select"><option value="">Choose Pokémon…</option></select>
+        </label>
+        <div class="status-choice" hidden>
+          <p>Did you catch it?</p>
+          <div><button class="caught" type="button">Caught</button><button class="missed" type="button">Missed</button></div>
+        </div>
+        <button class="clear-entry text-button" type="button" hidden>Clear this entry</button>
+      </div>
+    </article>
+  </template>
+  <script src="pools.js"></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
